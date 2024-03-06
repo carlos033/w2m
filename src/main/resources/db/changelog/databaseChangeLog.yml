@@ -1,0 +1,21 @@
+databaseChangeLog:
+-  include:
+      file: classpath:db/changelog/parameters/changelog01.yml
+-  include:
+      file: classpath:db/changelog/parameters/changelog02.yml
+-  include:
+      file: classpath:db/changelog/parameters/changelog03.yml
+-  include:
+      file: classpath:db/changelog/parameters/changelog04.yml
+-  include:
+      file: classpath:db/changelog/parameters/changelog05.yml
+-  include:
+      file: classpath:db/changelog/parameters/changelog06.yml
+-  include:
+      file: classpath:db/changelog/parameters/changelog07.yml
+-  include:
+      file: classpath:db/changelog/parameters/changelog08.yml
+-  include:
+      file: classpath:db/changelog/parameters/changelog09.yml
+-  include:
+      file: classpath:db/changelog/parameters/changelog10.yml

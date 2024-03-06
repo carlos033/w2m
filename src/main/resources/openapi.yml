@@ -1,0 +1,251 @@
+openapi: 3.0.3
+info:
+   title: W2B API
+   version: '1.5'
+   description: Información de superhéroes
+   contact:
+      name: Carlos Diaz
+      email: cdr8725@gmail.com
+security:
+-  BearerToken: []
+paths:
+   /SuperHero:
+      post:
+         summary: Create a new superhero
+         description: Create a new superhero with the provided data.
+         tags:
+         - SuperHeroes
+         operationId: create
+         requestBody:
+            required: true
+            content:
+               application/json:
+                  schema:
+                     $ref: '#/components/schemas/SuperHeroDTOEntrance'
+         responses:
+            '201':
+               description: Super heroe creado
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/SuperHeroDTO'
+            '400':
+               description: URL error
+            '500':
+               description: DB not accessible
+      put:
+         summary: Modify a superhero
+         description: Modify the information of an existing superhero.
+         tags:
+         - SuperHeroes
+         operationId: modify
+         requestBody:
+            required: true
+            content:
+               application/json:
+                  schema:
+                     $ref: '#/components/schemas/SuperHeroDTO'
+         responses:
+            '201':
+               description: Super heroe creado
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/SuperHeroDTO'
+            '400':
+               description: URL error
+            '500':
+               description: DB not accessible
+      get:
+         summary: Retrieve all superheroes
+         description: Retrieve a list of all superheroes.
+         tags:
+         - SuperHeroes
+         operationId: findAll
+         responses:
+            '200':
+               description: OK
+               content:
+                  application/json:
+                     schema:
+                        type: array
+                        items:
+                           $ref: '#/components/schemas/SuperHeroDTO'
+            '500':
+               description: DB not accessible
+   /SuperHero/{superHeroId}:
+      get:
+         summary: Search for a superhero by id.
+         description: Search for a superhero by id.
+         tags:
+         - SuperHeroes
+         operationId: getById
+         parameters:
+         -  in: path
+            name: superHeroId
+            description: name of the superhero
+            required: true
+            schema:
+               type: integer
+               format: int64
+         responses:
+            '200':
+               description: OK
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/SuperHeroDTO'
+            '204':
+               description: Not found
+            '400':
+               description: URL error
+            '500':
+               description: DB not accessible
+      delete:
+         summary: Delete a superhero by ID
+         description: Delete a superhero by ID
+         tags:
+         - SuperHeroes
+         operationId: delete
+         parameters:
+         -  in: path
+            name: superHeroId
+            description: superhero id to remove
+            required: true
+            schema:
+               type: integer
+               format: int64
+         responses:
+            '200':
+               description: OK
+            '400':
+               description: URL error
+            '500':
+               description: DB not accessible
+   /SuperHero/fragment/{fragmentName}:
+      get:
+         summary: Get superheroes by name snippet
+         description: Gets the detailed information of all superheroes that contain a fragment of the specified name.
+         tags:
+         - SuperHeroes
+         operationId: searchAllByFragment.
+         parameters:
+         -  in: path
+            name: fragmentName
+            description: Fragment of the name of the superhero to look for
+            required: true
+            schema:
+               type: string
+         responses:
+            '200':
+               description: OK
+               content:
+                  application/json:
+                     schema:
+                        type: array
+                        items:
+                           $ref: '#/components/schemas/SuperHeroDTO'
+            '204':
+               description: Not found
+            '400':
+               description: URL error
+            '500':
+               description: DB not accessible
+   /autenticacion/login:
+      post:
+         summary: Create an authentication token
+         description: Authenticates a user and generates a JWT token.
+         operationId: autenticacionLoginPost
+         requestBody:
+            required: true
+            content:
+               application/json:
+                  schema:
+                     $ref: '#/components/schemas/JwtRequest'
+         responses:
+            '201':
+               description: Token created
+               content:
+                  application/json:
+                     schema:
+                        $ref: '#/components/schemas/JwtResponse'
+            '204':
+               description: Invalid credentials
+            '400':
+               description: Url error
+            '500':
+               description: DB not accessible
+components:
+   schemas:
+      SuperHeroDTO:
+         type: object
+         properties:
+            idSuperhero:
+               description: Superhero identifier
+               type: integer
+               format: int64
+               example: 3
+            name:
+               description: Superhero name
+               type: string
+               example: Superman
+            civilIdentity:
+               description: Superhero Civil Identity
+               type: string
+               example: Clark Kent
+            skillList:
+               description: Skill List
+               type: array
+               items:
+                  $ref: '#/components/schemas/SkillDTO'
+      SuperHeroDTOEntrance:
+         type: object
+         properties:
+            name:
+               description: Superhero name
+               type: string
+               example: Superman
+            civilIdentity:
+               description: Superhero Civil Identity
+               type: string
+               example: Clark Kent
+            skillList:
+               description: Lista de habilidades
+               type: array
+               items:
+                  $ref: '#/components/schemas/SkillDTOEntrance'
+      SkillDTO:
+         type: object
+         properties:
+            skillId:
+               description: Skill identifier
+               type: integer
+               format: int64
+               example: 1
+            name:
+               description: Skill name
+               type: string
+               example: Flight
+      SkillDTOEntrance:
+         type: object
+         properties:
+            name:
+               description: Skill name
+               type: string
+               example: Flight
+      JwtResponse:
+         type: object
+         properties:
+            jwttoken:
+               type: string
+      JwtRequest:
+         type: object
+         properties:
+            identificator:
+               type: string
+               description: Username
+               example: Pedro69
+            password:
+               type: string
+               description: User password
+               example: 1234

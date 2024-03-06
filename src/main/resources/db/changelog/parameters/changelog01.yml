@@ -1,0 +1,32 @@
+databaseChangeLog:
+-  changeSet:
+      id: 1
+      author: Carlos Diaz
+      preConditions:
+         onFail: MARK_RAN
+         not:
+            tableExists:
+               tableName: super_hero
+      changes:
+      -  createTable:
+            tableName: super_hero
+            columns:
+            -  column:
+                  name: id_superhero
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                     primaryKey: true
+                     nullable: false
+            -  column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                     unique: true
+                     nullable: false
+            -  column:
+                  name: civil_identity
+                  type: varchar(255)
+                  constraints:
+                     unique: false
+                     nullable: true

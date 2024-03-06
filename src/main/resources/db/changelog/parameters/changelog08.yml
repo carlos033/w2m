@@ -1,0 +1,14 @@
+databaseChangeLog:
+-  changeSet:
+      id: 8
+      author: Carlos Diaz
+      changes:
+      -  insert:
+            tableName: skill
+            columns:
+            -  column:
+                  name: skill_name
+                  value: Master of Magic
+            -  column:
+                  name: id_superhero
+                  value: 1

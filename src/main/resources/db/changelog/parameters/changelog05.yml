@@ -1,0 +1,14 @@
+databaseChangeLog:
+-  changeSet:
+      id: 5
+      author: Carlos Diaz
+      changes:
+      -  insert:
+            tableName: super_hero
+            columns:           
+            -  column:
+                  name: name
+                  value: Doctor Fate
+            -  column:
+                  name: civil_identity
+                  value: John Zatara

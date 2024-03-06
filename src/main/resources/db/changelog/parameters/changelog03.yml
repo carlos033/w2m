@@ -1,0 +1,29 @@
+databaseChangeLog:
+-  changeSet:
+      id: 3
+      author: Carlos Diaz
+      preConditions:
+         onFail: MARK_RAN
+         not:
+            tableExists:
+               tableName: administrator
+      changes:
+      -  createTable:
+            tableName: administrator
+            columns:
+            -  column:
+                  name: user_name
+                  type: varchar(255)
+                  constraints:
+                     primaryKey: true
+                     nullable: false
+            -  column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                     nullable: false
+            -  column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                     nullable: false

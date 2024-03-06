@@ -1,0 +1,14 @@
+databaseChangeLog:
+-  changeSet:
+      id: 6
+      author: Carlos Diaz
+      changes:
+      -  insert:
+            tableName: super_hero
+            columns:            
+            -  column:
+                  name: name
+                  value: Spider-Man
+            -  column:
+                  name: civil_identity
+                  value: Peter Parker

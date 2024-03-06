@@ -1,0 +1,22 @@
+databaseChangeLog:
+-  changeSet:
+      id: 4
+      author: Carlos Diaz
+      preConditions:
+         onFail: MARK_RAN
+         sqlCheck:
+            expectedResult: 0
+            sql: SELECT COUNT(*) FROM administrator WHERE user_name = 'Pedro69'
+      changes:
+      -  insert:
+            tableName: administrator
+            columns:
+            -  column:
+                  name: user_name
+                  value: Pedro69
+            -  column:
+                  name: name
+                  value: Pedro
+            -  column:
+                  name: password
+                  value: $2a$10$8E0LMGpR64no3zInykkmE.V/Rza/o616qIP64tX3Equ6iezdsI8d.

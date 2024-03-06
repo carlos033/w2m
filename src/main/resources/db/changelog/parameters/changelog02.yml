@@ -1,0 +1,36 @@
+databaseChangeLog:
+-  changeSet:
+      id: 2
+      author: Carlos Diaz
+      preConditions:
+         onFail: MARK_RAN
+         not:
+            tableExists:
+               tableName: skill
+      changes:
+      -  createTable:
+            tableName: skill
+            columns:
+            -  column:
+                  name: skill_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                     primaryKey: true
+                     nullable: false
+            -  column:
+                  name: skill_name
+                  type: varchar(255)
+                  constraints:
+                     nullable: false
+            -  column:
+                  name: id_superhero
+                  type: bigint
+                  constraints:
+                     nullable: false
+      -  addForeignKeyConstraint:
+            baseColumnNames: id_superhero
+            baseTableName: skill
+            constraintName: FK_skill_hero
+            referencedColumnNames: id_superhero
+            referencedTableName: super_hero
