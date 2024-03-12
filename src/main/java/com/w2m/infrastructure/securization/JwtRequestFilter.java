@@ -21,17 +21,17 @@ import lombok.AllArgsConstructor;
 @Component
 @AllArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter{
-	private static final String AUTHORIZED = "Authorization";
-	private static final String STARTS = "Bearer";
+	private static final String AUTHORIZATION_HEADER  = "Authorization";
+	private static final String BEARER_PREFIX  = "Bearer";
 	private JwtToken jwtTokenUtil;
 	private ApplicationContext applicationContext;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 			FilterChain chain) throws ServletException, IOException {
-		final String requestTokenHeader = request.getHeader(AUTHORIZED);
+		final String requestTokenHeader = request.getHeader(AUTHORIZATION_HEADER );
 
-		if (requestTokenHeader != null && requestTokenHeader.startsWith(STARTS)) {
+		if (requestTokenHeader != null && requestTokenHeader.startsWith(BEARER_PREFIX)) {
 			String jwtToken = requestTokenHeader.substring(7);
 			String identifier = jwtTokenUtil.getTokenIdentifier(jwtToken);
 

@@ -36,6 +36,7 @@ public class SuperHero implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_superhero")
+	@Schema(name = "idSuperhero", description = "Superhero's id", example = "1")
 	private Long idSuperhero;
 
 	@Column(unique = true)

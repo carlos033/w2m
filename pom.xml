@@ -135,6 +135,7 @@
 								<annotationLibrary>swagger2</annotationLibrary>
 								<serializableModel>true</serializableModel>
 								<useJakartaEe>true</useJakartaEe>
+								<generateModelDocumentation>true</generateModelDocumentation>
 								<additionalModelTypeAnnotations>
 									@lombok.NoArgsConstructor
 									@lombok.AllArgsConstructor

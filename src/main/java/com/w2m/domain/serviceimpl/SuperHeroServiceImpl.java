@@ -18,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @Service
 public class SuperHeroServiceImpl implements SuperHeroeService{
-	private static final String MESSAGE = "We call the adapter";
 	private static final String MESSAGE2 = "No superheroes were found with the provided fragment.";
 	private static final String MESSAGE3 = "Rate not found in the database";
 	private final SuperHeroAdapter adapter;
@@ -30,14 +29,12 @@ public class SuperHeroServiceImpl implements SuperHeroeService{
 
 	@Override
 	public SuperHeroDTO findById(long id) {
-		log.info(MESSAGE);
 		return adapter.findById(id)
 				.orElseThrow(() -> new NotContentW2M(HttpStatus.NO_CONTENT, MESSAGE3));
 	}
 
 	@Override
 	public List<SuperHeroDTO> searchByFragment(String fragment) {
-		log.info(MESSAGE);
 		List<SuperHeroDTO> superHeroList = adapter.findByNameContaining(fragment);
 		if (superHeroList.isEmpty()) {
 			throw new NotContentW2M(HttpStatus.NO_CONTENT, MESSAGE2);
@@ -47,7 +44,6 @@ public class SuperHeroServiceImpl implements SuperHeroeService{
 
 	@Override
 	public List<SuperHeroDTO> findALL() {
-		log.info(MESSAGE);
 		return adapter.findAll();
 	}
 
@@ -55,14 +51,13 @@ public class SuperHeroServiceImpl implements SuperHeroeService{
 	public void deleteHero(long id) {
 		log.info("We search by id to see if said superhero exists");
 		findById(id);
-		log.info(MESSAGE);
 		adapter.deleteById(id);
 	}
 
 	@Override
 	public SuperHeroDTO modifySuperHero(SuperHeroDTO dto) {
-		log.info(MESSAGE);
-		return adapter.modify(dto);
+		SuperHeroDTO dTO = findById(dto.getIdSuperhero());
+		return adapter.modify(dTO,dto);
 	}
 
 }

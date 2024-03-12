@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @Component
 @Slf4j
-public class SuperHeroAdapter {
+public class SuperHeroAdapter{
 	private static final String MESSAGE3 = "Rate not found in the database";
 	private SuperHeroRepository superHeroRepository;
 	private SkillRepository skillRepository;
@@ -39,7 +39,8 @@ public class SuperHeroAdapter {
 
 	@Cacheable(value = "findCache", key = "#fragment")
 	public List<SuperHeroDTO> findByNameContaining(String fragment) {
-		return (superHeroRepository.findByNameContaining(fragment)).stream().map(mapper::convertToDTO).toList();
+		return (superHeroRepository.findByNameContaining(fragment)).stream().map(mapper::convertToDTO)
+				.toList();
 	}
 
 	public List<SuperHeroDTO> findAll() {
@@ -50,25 +51,21 @@ public class SuperHeroAdapter {
 		superHeroRepository.deleteById(id);
 	}
 
-	public SuperHeroDTO modify(SuperHeroDTO dto) {
-		SuperHeroDTO dTO = (findById(dto.getIdSuperhero())
-				.orElseThrow(() -> new NotContentW2M(HttpStatus.NO_CONTENT, MESSAGE3)));
-		SuperHero entity = mapper.convertToEntity(dTO);
-
+	public SuperHeroDTO modify(SuperHeroDTO dto, SuperHeroDTO dto2) {
+		SuperHero entity = mapper.convertToEntity(dto2);
 		if (!dto.getCivilIdentity().isBlank()) {
 			entity.setCivilIdentity(dto.getCivilIdentity());
 		}
 		if (!dto.getName().isBlank()) {
 			entity.setName(dto.getName());
 		}
-		if (!dto.getSkillList().get(0).getName().isBlank()) {
-			for (int i = 0; i < dto.getSkillList().size(); i++) {
-				Skill skill = skillRepository.findById(dto.getSkillList().get(i).getSkillId())
-						.orElseThrow(() -> new NotContentW2M(HttpStatus.NO_CONTENT, MESSAGE3));
-				skill.setName(dto.getSkillList().get(i).getName());
-				entity.getSkillList().set(i, skill);
-			}
-		}
+		dto.getSkillList().stream().filter(skillDto -> !skillDto.getName().isBlank())
+				.forEach(skillDto -> {
+					Skill skill = skillRepository.findById(skillDto.getSkillId())
+							.orElseThrow(() -> new NotContentW2M(HttpStatus.NO_CONTENT, MESSAGE3));
+					skill.setName(skillDto.getName());
+					entity.getSkillList().set(dto.getSkillList().indexOf(skillDto), skill);
+				});
 		return mapper.convertToDTO(superHeroRepository.save(entity));
 	}
 }

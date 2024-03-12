@@ -58,7 +58,7 @@ public class JwtToken{
 		}
 	}
 
-	private Boolean haExpiradoElToken(String token) {
+	private Boolean hasTokenExpired(String token) {
 		final Instant expiration = getTokenExpiration(token);
 		return expiration.isBefore(Instant.now());
 	}
@@ -90,6 +90,6 @@ public class JwtToken{
 
 	public Boolean validateToken(String token, String expectedSubject) {
 		final String identifier = getTokenIdentifier(token);
-		return (identifier.equals(expectedSubject) && !haExpiradoElToken(token));
+		return (identifier.equals(expectedSubject) && !hasTokenExpired(token));
 	}
 }

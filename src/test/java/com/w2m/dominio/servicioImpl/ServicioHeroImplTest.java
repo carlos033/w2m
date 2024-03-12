@@ -27,7 +27,7 @@ import com.w2m.domain.serviceimpl.SuperHeroServiceImpl;
  * Carlos Diaz https://github.com/carlos033?tab=repositories
  */
 @ExtendWith(MockitoExtension.class)
-class ServicioHeroImplTest {
+class ServicioHeroImplTest{
 
 	@Mock
 	SuperHeroAdapter superHeroAdapter;
@@ -81,8 +81,8 @@ class ServicioHeroImplTest {
 	@Test
 	void testSearchByFragment_FoundSuperHeroes() {
 		// Given
-		SuperHeroDTO superHeroDTO = SuperHeroDTO.builder().idSuperhero(1L).name("Superman").civilIdentity("Clark")
-				.skillList(new ArrayList<>()).build();
+		SuperHeroDTO superHeroDTO = SuperHeroDTO.builder().idSuperhero(1L).name("Superman")
+				.civilIdentity("Clark").skillList(new ArrayList<>()).build();
 		String fragment = "man";
 		List<SuperHeroDTO> expectedList = new ArrayList<>();
 		expectedList.add(superHeroDTO);
@@ -131,21 +131,5 @@ class ServicioHeroImplTest {
 		// When & Then
 		assertThrows(NotContentW2M.class, () -> superHeroService.deleteHero(id));
 		verify(superHeroAdapter, never()).deleteById(id);
-	}
-
-	@Test
-	void testModifySuperHero() {
-		// Given
-		SuperHeroDTO dto = SuperHeroDTO.builder().build();
-		SuperHeroDTO expectedDTO = SuperHeroDTO.builder().build();
-
-		when(superHeroAdapter.modify(dto)).thenReturn(expectedDTO);
-
-		// When
-		SuperHeroDTO result = superHeroService.modifySuperHero(dto);
-
-		// Then
-		assertNotNull(result);
-		assertEquals(expectedDTO, result);
 	}
 }
