@@ -14,13 +14,13 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @Component
 public class JwtAuthenticationPoint implements AuthenticationEntryPoint{
-	private static final String UNAUTHORIZED = "{\"message\": \"Not authorized\"}";
+	private static final String UNAUTHORIZED_MESSAGE = "{\"message\": \"Not authorized\"}";
 
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException {
 		response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		response.getWriter().write(UNAUTHORIZED);
+		response.getWriter().write(UNAUTHORIZED_MESSAGE);
 	}
 }

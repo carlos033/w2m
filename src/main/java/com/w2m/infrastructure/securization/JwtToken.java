@@ -4,6 +4,7 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -77,16 +78,29 @@ public class JwtToken{
 		final Algorithm algorithm = Algorithm.HMAC512(secret);
 		final Instant now = Instant.now();
 		final Instant expirationTime = now.plus(Duration.ofDays(1));
+
 		Object usuarioClaimsObj = claims.get(USER);
+
 		if (usuarioClaimsObj instanceof Map) {
-			@SuppressWarnings("unchecked")
-			Map<String, Object> usuarioClaims = (Map<String, Object>) usuarioClaimsObj;
-			return JWT.create().withSubject(subject).withIssuedAt(now).withExpiresAt(expirationTime)
-					.withClaim(USER, usuarioClaims).sign(algorithm);
-		} else {
-			throw new InvalidClaimException(INVALID_CLAIM_EXCEPTION);
+			Map<?, ?> rawUsuarioClaims = (Map<?, ?>) usuarioClaimsObj;
+			Map<String, Object> usuarioClaims = new HashMap<>();
+
+			for (Map.Entry<?, ?> entry : rawUsuarioClaims.entrySet()) {
+				if (entry.getKey() instanceof String) {
+					String key = (String) entry.getKey();
+					usuarioClaims.put(key, entry.getValue());
+				}
+			}
+
+			if (!usuarioClaims.isEmpty()) {
+				return JWT.create().withSubject(subject).withIssuedAt(Date.from(now))
+						.withExpiresAt(Date.from(expirationTime)).withClaim(USER, usuarioClaims)
+						.sign(algorithm);
+			}
 		}
+		throw new InvalidClaimException(INVALID_CLAIM_EXCEPTION);
 	}
+
 
 	public Boolean validateToken(String token, String expectedSubject) {
 		final String identifier = getTokenIdentifier(token);

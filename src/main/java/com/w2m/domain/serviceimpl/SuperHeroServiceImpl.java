@@ -44,7 +44,7 @@ public class SuperHeroServiceImpl implements SuperHeroeService{
 
 	@Override
 	public List<SuperHeroDTO> findALL() {
-		return adapter.findAll();
+		return List.copyOf(adapter.findAll());
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class SuperHeroServiceImpl implements SuperHeroeService{
 	@Override
 	public SuperHeroDTO modifySuperHero(SuperHeroDTO dto) {
 		SuperHeroDTO dTO = findById(dto.getIdSuperhero());
-		return adapter.modify(dTO,dto);
+		return adapter.modify(dTO, dto);
 	}
 
 }

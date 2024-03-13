@@ -22,7 +22,6 @@ public class AdministratorImplService implements AdministratorService{
 
 	@Override
 	public Administrator findById(String usuario) {
-		log.info("We call the adapter");
 		return adapter.findById(usuario).orElseThrow(() -> {
 			log.info(NO_CONTENT_MESSAGE);
 			return new NotContentW2M(HttpStatus.NO_CONTENT, NO_CONTENT_MESSAGE);
